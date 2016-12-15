@@ -4,6 +4,7 @@ module Knock
   class AuthToken
     attr_reader :token
     attr_reader :payload
+    attr_reader :verify_options
 
     def initialize payload: {}, token: nil, verify_options: {}
       if token.present?
@@ -11,8 +12,7 @@ module Knock
         @token = token
       else
         @payload = claims.merge(payload)
-        @token = JWT.encode @payload,
-          secret_key,
+        @token = JWT.encode @payload, secret_key,
           Knock.token_signature_algorithm
       end
     end
